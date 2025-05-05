@@ -1,5 +1,6 @@
 import os
 import yaml
+import logging
 from typing import Any
 
 
@@ -68,10 +69,62 @@ def setup_logging(config: dict[str, Any]) -> None:
     Set up logging based on configuration.
 
     Args:
-        config (Dict[str, Any]): Configuration dictionary.
+        config (dict[str, Any]): Configuration dictionary containing logging settings.
+            Expected keys in config['logging']:
+            - file: Path to the log file
+            - level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+            - max_size: Maximum log file size in MB (optional)
+            - backup_count: Number of backup logs to keep (optional)
 
-    Note:
-        This is a placeholder function for future implementation.
+    Returns:
+        None
+
+    Raises:
+        KeyError: If required logging configuration is missing.
+        ValueError: If log level is invalid.
+        OSError: If log directory creation fails.
     """
-    # TODO: Implement logging setup
-    pass
+    # Extract logging configuration with defaults
+    logging_config = config.get('logging', {})
+    log_file = logging_config.get('file', 'logs/pipeline.log')
+    log_level_str = logging_config.get('level', 'INFO').upper()
+
+    # Map log level string to logging constant
+    log_level_map = {
+        'DEBUG': logging.DEBUG,
+        'INFO': logging.INFO,
+        'WARNING': logging.WARNING,
+        'ERROR': logging.ERROR,
+        'CRITICAL': logging.CRITICAL
+    }
+
+    log_level = log_level_map.get(log_level_str, logging.INFO)
+
+    # Ensure the log directory exists
+    log_dir = os.path.dirname(log_file)
+    if log_dir and not os.path.exists(log_dir):
+        try:
+            os.makedirs(log_dir, exist_ok=True)
+        except OSError as e:
+            raise OSError(f"Failed to create log directory {log_dir}: {str(e)}")
+
+    # Configure logging with both file and console handlers
+    handlers = [
+        logging.FileHandler(log_file),
+        logging.StreamHandler()
+    ]
+
+    # Configure logging format
+    log_format = '%(asctime)s - %(levelname)s - %(message)s'
+    date_format = '%Y-%m-%d %H:%M:%S'
+
+    # Configure the root logger
+    logging.basicConfig(
+        level=log_level,
+        format=log_format,
+        datefmt=date_format,
+        handlers=handlers
+    )
+
+    # Log the setup completion
+    logging.info(f"Logging configured: level={log_level_str}, file={log_file}")
