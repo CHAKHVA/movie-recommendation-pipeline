@@ -3,23 +3,23 @@
 ## Iteration 1: Foundation
 
 *   [ ] **1.1: Project Setup - Initial Structure**
-    *   [ ] Initialize Git repository (`git init`).
-    *   [ ] Create root directory (`movie-recommender-pipeline/`).
-    *   [ ] Create subdirectories: `src/`, `tests/`, `logs/`, `models/`.
-    *   [ ] Create empty files: `main.py`, `requirements.txt`, `config.yaml`, `.gitignore`, `README.md`.
-    *   [ ] Create empty files in `src/`: `__init__.py`, `utils.py`, `data_loader.py`, `cleaner.py`, `feature_engineer.py`, `model.py`, `writer.py`.
-    *   [ ] Create empty file in `tests/`: `__init__.py`.
+    *   [x] Initialize Git repository (`git init`).
+    *   [x] Create root directory (`movie-recommendation-pipeline/`).
+    *   [x] Create subdirectories: `src/`, `tests/`, `logs/`, `models/`.
+    *   [x] Create empty files: `main.py`, `requirements.txt`, `config.yaml`, `.gitignore`, `README.md`.
+    *   [x] Create empty files in `src/`: `__init__.py`, `utils.py`, `data_loader.py`, `cleaner.py`, `feature_engineer.py`, `model.py`, `writer.py`.
+    *   [x] Create empty file in `tests/`: `__init__.py`.
 *   [ ] **1.2: Project Setup - .gitignore**
-    *   [ ] Populate `.gitignore` with Python, IDE, OS, logs, models, venv, secrets exclusions.
+    *   [x] Populate `.gitignore` with Python, IDE, OS, logs, models, venv, secrets exclusions.
 *   [ ] **1.3: Project Setup - requirements.txt**
-    *   [ ] Populate `requirements.txt` with `pyspark`, `pyyaml`, `psycopg2-binary`, `pytest`, `boto3`.
-    *   [ ] Create and activate a Python virtual environment.
-    *   [ ] Install requirements (`pip install -r requirements.txt`).
+    *   [x] Populate `requirements.txt` with `pyspark`, `pyyaml`, `psycopg2-binary`, `pytest`, `boto3`.
+    *   [x] Create and activate a Python virtual environment.
+    *   [x] Install requirements (`pip install -r requirements.txt`).
 *   [ ] **1.4: Project Setup - config.yaml**
-    *   [ ] Populate `config.yaml` with structure (s3, postgres, als, output, logging).
-    *   [ ] Use placeholder values (esp. for secrets).
-    *   [ ] Set initial `s3.paths` to use *local* relative paths (e.g., `data/movies.csv`) for easier development.
-    *   [ ] Create a local `data/` directory and place sample/full MovieLens CSVs inside.
+    *   [x] Populate `config.yaml` with structure (s3, postgres, als, output, logging).
+    *   [x] Use placeholder values (esp. for secrets).
+    *   [x] Set initial `s3.paths` to use *local* relative paths (e.g., `data/movies.csv`) for easier development.
+    *   [x] Create a local `data/` directory and place sample/full MovieLens CSVs inside.
 *   [ ] **1.5: Core Utilities - Config Loading**
     *   [ ] Implement `load_config(path)` function in `src/utils.py` (import yaml, error handling).
     *   [ ] Create `tests/test_utils.py`.

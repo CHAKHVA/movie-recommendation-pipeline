@@ -1,0 +1,69 @@
+# Movie Recommendation Pipeline Configuration
+
+# Storage Configuration
+# Note: Use local paths for development, S3 paths for production
+storage:
+  mode: "local" # Options: "local" or "s3"
+  local:
+    movies: "data/ml-latest-small/movies.csv"
+    ratings: "data/ml-latest-small/ratings.csv"
+    tags: "data/ml-latest-small/tags.csv"
+    links: "data/ml-latest-small/links.csv"
+  s3:
+    bucket: "dev-movie-ratings-data"
+    paths:
+      movies: "s3://dev-movie-ratings-data/data/movies.csv"
+      ratings: "s3://dev-movie-ratings-data/data/ratings.csv"
+      tags: "s3://dev-movie-ratings-data/data/tags.csv"
+      links: "s3://dev-movie-ratings-data/data/links.csv"
+    region: "us-central-1"
+
+# Database Configuration
+postgres:
+  host: "localhost"
+  port: 5432
+  database: "moviedb"
+  user: "chakhva"
+  password: ""
+  schema: "public"
+
+# Spark Configuration
+spark:
+  app_name: "Movie Recommendation Pipeline"
+  master: "local[*]" # Use all available cores locally
+  log_level: "WARN"
+
+# ALS Model Parameters
+# Alternating Least Squares algorithm configuration
+als:
+  rank: 10 # Number of latent factors
+  maxIter: 15 # Maximum number of iterations
+  regParam: 0.1 # Regularization parameter
+  alpha: 1.0 # Parameter for implicit preference
+  coldStartStrategy: "drop" # How to handle unknown users/items
+
+# Output Configuration
+output:
+  top_n: 10 # Number of recommendations per user
+  tables:
+    recommendations: "recommendations" # Table name for user recommendations
+    movie_stats: "movie_stats" # Table name for movie statistics
+    user_profiles: "user_profiles" # Table name for user profiles
+
+# Data Processing Configuration
+processing:
+  min_ratings: 5 # Minimum ratings for a movie to be considered
+  min_users: 3 # Minimum users for a movie to be considered
+  rating_threshold: 3.5 # Threshold for considering a rating positive
+
+# Logging Configuration
+logging:
+  file: "logs/pipeline.log"
+  level: "INFO" # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  max_size: 10 # Maximum log file size in MB
+  backup_count: 5 # Number of backup logs to keep
+
+# Performance Configuration
+performance:
+  batch_size: 1000 # Batch size for processing
+  cache_intermediate: true # Whether to cache intermediate results
