@@ -5,10 +5,10 @@
 storage:
   mode: "local" # Options: "local" or "s3"
   local:
-    movies: "data/ml-latest-small/movies.csv"
-    ratings: "data/ml-latest-small/ratings.csv"
-    tags: "data/ml-latest-small/tags.csv"
-    links: "data/ml-latest-small/links.csv"
+    movies: "data/movies.csv"
+    ratings: "data/ratings.csv"
+    tags: "data/tags.csv"
+    links: "data/links.csv"
   s3:
     bucket: "dev-movie-ratings-data"
     paths:

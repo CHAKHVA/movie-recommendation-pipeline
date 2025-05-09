@@ -1,9 +1,12 @@
+import logging
 import os
 import re
+
 import pytest
 import yaml
-import logging
-from src.utils import load_config, get_nested_config, setup_logging
+from pyspark.sql import SparkSession
+
+from src.utils import get_nested_config, load_config, setup_logging, get_spark_session
 
 
 def test_load_config(tmp_path):
@@ -188,6 +191,64 @@ def test_setup_logging_create_directory(tmp_path):
     logging.debug("Debug test message")
     assert os.path.exists(log_file)
 
+def test_get_spark_session():
+    """Test creating a SparkSession."""
+    # Test with default parameters
+    spark = get_spark_session()
+
+    try:
+        # Check if we got a SparkSession
+        assert isinstance(spark, SparkSession)
+
+        # Check if app name is set correctly
+        assert spark.sparkContext.appName == "MovieRecommender"
+
+        # Check if master is set to local
+        assert spark.sparkContext.master is not None and spark.sparkContext.master.startswith("local")
+
+        # Check if PostgreSQL JDBC driver is configured
+        jdbc_packages = spark.conf.get("spark.jars.packages")
+        assert jdbc_packages is not None and "postgresql" in jdbc_packages
+
+    finally:
+        # Always stop the SparkSession to clean up resources
+        if spark:
+            spark.stop()
+
+
+def test_get_spark_session_with_config():
+    """Test creating a SparkSession with custom configuration."""
+    # Create a custom config
+    config = {
+        "spark": {
+            "app_name": "CustomAppName",
+            "master": "local[2]",
+            "log_level": "WARN",
+            "config": {
+                "spark.sql.shuffle.partitions": "10",
+                "spark.executor.memory": "1g"
+            }
+        }
+    }
+
+    # Get a session with the custom config
+    spark = get_spark_session(config)
+
+    try:
+        # Check if app name from config is used
+        assert spark.sparkContext.appName == "CustomAppName"
+
+        # Check if master from config is used
+        assert spark.sparkContext.master == "local[2]"
+
+        # Check custom configurations
+        assert spark.conf.get("spark.sql.shuffle.partitions") == "10"
+        assert spark.conf.get("spark.executor.memory") == "1g"
+
+    finally:
+        # Always stop the SparkSession
+        if spark:
+            spark.stop()
 
 if __name__ == "__main__":
     pytest.main()

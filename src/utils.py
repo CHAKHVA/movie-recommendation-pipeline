@@ -1,7 +1,9 @@
-import os
-import yaml
 import logging
-from typing import Any
+import os
+from typing import Any, cast
+
+import yaml
+from pyspark.sql import SparkSession
 
 
 def load_config(path: str) -> dict[str, Any]:
@@ -128,3 +130,63 @@ def setup_logging(config: dict[str, Any]) -> None:
 
     # Log the setup completion
     logging.info(f"Logging configured: level={log_level_str}, file={log_file}")
+
+def get_spark_session(config: dict[str, Any] | None = None, app_name: str = "MovieRecommendation") -> SparkSession:
+    """
+    Create or get a configured SparkSession for the pipeline.
+
+    Args:
+        config (dict[str, Any], optional): Configuration dictionary. If provided,
+            it will use the spark settings from the config.
+        app_name (str, optional): Name of the Spark application.
+            Defaults to "MovieRecommender".
+
+    Returns:
+        SparkSession: The configured SparkSession instance.
+
+    Example:
+        >>> config = load_config("config.yaml")
+        >>> spark = get_spark_session(config)
+        >>> # Do operations with spark
+        >>> spark.stop()
+    """
+    # Start with default builder
+    builder = cast(SparkSession.Builder, SparkSession.builder)
+    builder = builder.appName(app_name)
+
+    # Use local mode by default
+    master = "local[*]"
+
+    # If config is provided, use it to override defaults
+    if config and 'spark' in config:
+        spark_config = config['spark']
+
+        # Override app_name if specified in config
+        if 'app_name' in spark_config:
+            builder = builder.appName(spark_config['app_name'])
+
+        # Override master if specified in config
+        if 'master' in spark_config:
+            master = spark_config['master']
+
+    # Set the master
+    builder = builder.master(master)
+
+    # Add PostgreSQL JDBC driver
+    builder = builder.config("spark.jars.packages", "org.postgresql:postgresql:42.6.0")
+
+    # Add any additional configuration options from the config
+    if config and 'spark' in config and 'config' in config['spark']:
+        for key, value in config['spark']['config'].items():
+            builder = builder.config(key, value)
+
+    # Create or get the SparkSession
+    spark = builder.getOrCreate()
+
+    # Set log level if specified in config
+    if config and 'spark' in config and 'log_level' in config['spark']:
+        spark.sparkContext.setLogLevel(config['spark']['log_level'])
+
+    logging.info(f"Created SparkSession with appName={spark.sparkContext.appName} and master={spark.sparkContext.master}")
+
+    return spark
