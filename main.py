@@ -7,7 +7,7 @@ from src.utils import load_config, setup_logging, get_spark_session
 from src.data_loader import load_csv_data
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 from src.feature_engineer import join_dataframes
-from src.model import train_als_model
+from src.model import train_als_model, generate_recommendations
 
 # Path to the configuration file
 CONFIG_PATH = "config.yaml"
@@ -119,6 +119,11 @@ if __name__ == "__main__":
                 os.makedirs("models")
             model.save("models/als_model")
             logging.info("ALS model saved to models/als_model.")
+
+            # Generate recommendations
+            top_n = config.get("output", {}).get("top_n", 10)
+            recommendations = generate_recommendations(model, top_n)
+            logging.info(f"Generated {top_n} recommendations per user.")
 
             # Run the pipeline (placeholder)
             success = run_pipeline(config)

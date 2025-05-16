@@ -102,17 +102,17 @@
 
 ## Iteration 5: ALS Model Training
 
-*   [ ] **5.1: Model Training - ALS Function**
-    *   [ ] Create `src/model.py`.
-    *   [ ] Implement `train_als_model(data_df, config)` (import ALS, set params from config, set cols, coldStartStrategy, nonnegative, fit model, error handling).
-*   [ ] **5.2: Model Training - ALS Test**
-    *   [ ] Create `tests/test_model.py`.
-    *   [ ] Write `test_train_als_model` using small sample data and dummy config (assert model type is `ALSModel`, basic transform works).
-*   [ ] **5.3: Main Script - Integrate Model Training**
-    *   [ ] Update `main.py` to import `train_als_model`.
-    *   [ ] Call `train_als_model` with joined data and config.
-    *   [ ] Log confirmation.
-    *   [ ] Optional: Save model using `model.save("models/als_model")`. Ensure `models/` exists.
+*   [x] **5.1: Model Training - ALS Function**
+    *   [x] Create `src/model.py`.
+    *   [x] Implement `train_als_model(data_df, config)` (import ALS, set params from config, set cols, coldStartStrategy, nonnegative, fit model, error handling).
+*   [x] **5.2: Model Training - ALS Test**
+    *   [x] Create `tests/test_model.py`.
+    *   [x] Write `test_train_als_model` using small sample data and dummy config (assert model type is `ALSModel`, basic transform works).
+*   [x] **5.3: Main Script - Integrate Model Training**
+    *   [x] Update `main.py` to import `train_als_model`.
+    *   [x] Call `train_als_model` with joined data and config.
+    *   [x] Log confirmation.
+    *   [x] Optional: Save model using `model.save("models/als_model")`. Ensure `models/` exists.
 
 ## Iteration 6: Generating Recommendations
 
