@@ -5,6 +5,7 @@ import time
 from src.utils import load_config, setup_logging, get_spark_session
 from src.data_loader import load_csv_data
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
+from src.feature_engineer import join_dataframes
 
 # Path to the configuration file
 CONFIG_PATH = "config.yaml"
@@ -95,6 +96,18 @@ if __name__ == "__main__":
             # Clean links
             cleaned_links = clean_links(links_df)
             logging.info(f"Cleaned Links DataFrame row count: {cleaned_links.count()}")
+
+            # Join all cleaned DataFrames
+            joined_df = join_dataframes(
+                cleaned_ratings,
+                cleaned_movies,
+                tags_df=cleaned_tags,
+                links_df=cleaned_links
+            )
+            logging.info("Successfully joined ratings, movies, tags, and links DataFrames.")
+            logging.info(f"Joined DataFrame schema: {joined_df.schema}")
+            logging.info(f"Joined DataFrame row count: {joined_df.count()}")
+            logging.info(f"Sample rows from joined DataFrame: {joined_df.show(5, truncate=False)}")
 
             # Run the pipeline (placeholder)
             success = run_pipeline(config)
