@@ -116,29 +116,29 @@
 
 ## Iteration 6: Generating Recommendations
 
-*   [ ] **6.1: Recommendations - Generation Function**
-    *   [ ] Implement `generate_recommendations(model, top_n)` in `src/model.py` (use `recommendForAllUsers`, explode results, select final columns `userId`, `movieId`, `predicted_rating`).
-*   [ ] **6.2: Recommendations - Generation Test**
-    *   [ ] Write `test_generate_recommendations` in `tests/test_model.py` (train model on sample data, generate recs, assert schema, count per user <= top_n, check rating type).
-*   [ ] **6.3: Main Script - Integrate Recommendation Generation**
-    *   [ ] Update `main.py` to import `generate_recommendations`.
-    *   [ ] Call `generate_recommendations` with trained model and `top_n` from config.
-    *   [ ] Log confirmation.
+*   [x] **6.1: Recommendations - Generation Function**
+    *   [x] Implement `generate_recommendations(model, top_n)` in `src/model.py` (use `recommendForAllUsers`, explode results, select final columns `userId`, `movieId`, `predicted_rating`).
+*   [x] **6.2: Recommendations - Generation Test**
+    *   [x] Write `test_generate_recommendations` in `tests/test_model.py` (train model on sample data, generate recs, assert schema, count per user <= top_n, check rating type).
+*   [x] **6.3: Main Script - Integrate Recommendation Generation**
+    *   [x] Update `main.py` to import `generate_recommendations`.
+    *   [x] Call `generate_recommendations` with trained model and `top_n` from config.
+    *   [x] Log confirmation.
 
 ## Iteration 7: Writing to PostgreSQL
 
-*   [ ] **7.1: Data Writing - PostgreSQL Writer Function**
-    *   [ ] Create `src/writer.py`.
-    *   [ ] Implement `write_to_postgres(df, db_config, table_name)` (build JDBC URL, properties, use `df.write.jdbc`, mode='overwrite', error handling).
-*   [ ] **7.2: Data Writing - PostgreSQL Writer Test**
-    *   [ ] Set up a local **test** PostgreSQL database/user.
-    *   [ ] Create `tests/test_writer.py`.
-    *   [ ] Define test DB config (use env vars or safe method).
-    *   [ ] Write `test_write_to_postgres` (write sample DF, read back via JDBC, assert count/content, test overwrite, cleanup table).
-*   [ ] **7.3: Main Script - Integrate Writing Recommendations**
-    *   [ ] Update `main.py` to import `write_to_postgres`.
-    *   [ ] Call `write_to_postgres` for `recommendations_df` using DB config and table name from main config.
-    *   [ ] Log confirmation.
+*   [x] **7.1: Data Writing - PostgreSQL Writer Function**
+    *   [x] Create `src/writer.py`.
+    *   [x] Implement `write_to_postgres(df, db_config, table_name)` (build JDBC URL, properties, use `df.write.jdbc`, mode='overwrite', error handling).
+*   [x] **7.2: Data Writing - PostgreSQL Writer Test**
+    *   [x] Set up a local **test** PostgreSQL database/user.
+    *   [x] Create `tests/test_writer.py`.
+    *   [x] Define test DB config (use env vars or safe method).
+    *   [x] Write `test_write_to_postgres` (write sample DF, read back via JDBC, assert count/content, test overwrite, cleanup table).
+*   [x] **7.3: Main Script - Integrate Writing Recommendations**
+    *   [x] Update `main.py` to import `write_to_postgres`.
+    *   [x] Call `write_to_postgres` for `recommendations_df` using DB config and table name from main config.
+    *   [x] Log confirmation.
 
 ## Iteration 8: Adding Movie Stats
 
