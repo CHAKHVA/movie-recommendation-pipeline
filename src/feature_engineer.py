@@ -1,6 +1,6 @@
 from typing import Optional
 from pyspark.sql import DataFrame
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, avg, count
 
 def join_dataframes(
     ratings_df: DataFrame,
@@ -33,3 +33,19 @@ def join_dataframes(
         columns.extend(["imdbId", "tmdbId"])
     selected_df = joined_df.select(*columns)
     return selected_df
+
+def calculate_movie_stats(ratings_df):
+    """
+    Calculate movie statistics from ratings DataFrame.
+
+    Args:
+        ratings_df (DataFrame): DataFrame containing ratings data.
+
+    Returns:
+        DataFrame: DataFrame with movie statistics (movieId, avg_rating, rating_count).
+    """
+    stats_df = ratings_df.groupBy("movieId").agg(
+        avg("rating").alias("avg_rating"),
+        count("rating").alias("rating_count")
+    )
+    return stats_df

@@ -6,7 +6,7 @@ import os
 from src.utils import load_config, setup_logging, get_spark_session
 from src.data_loader import load_csv_data
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
-from src.feature_engineer import join_dataframes
+from src.feature_engineer import join_dataframes, calculate_movie_stats
 from src.model import train_als_model, generate_recommendations
 from src.writer import write_to_postgres
 
@@ -131,6 +131,14 @@ if __name__ == "__main__":
             table_name = config.get("output", {}).get("tables", {}).get("recommendations", "recommendations")
             write_to_postgres(recommendations, db_config, table_name)
             logging.info(f"Recommendations written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}.")
+
+            # Calculate movie statistics
+            movie_stats_df = calculate_movie_stats(cleaned_ratings)
+            logging.info(f"Calculated movie statistics for {movie_stats_df.count()} movies.")
+            # Write movie statistics to PostgreSQL
+            table_name = config.get("output", {}).get("tables", {}).get("movie_stats", "movie_stats")
+            write_to_postgres(movie_stats_df, db_config, table_name)
+            logging.info(f"Movie statistics written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}.")
 
             # Run the pipeline (placeholder)
             success = run_pipeline(config)
