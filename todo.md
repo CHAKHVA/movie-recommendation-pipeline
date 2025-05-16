@@ -39,46 +39,46 @@
 *   [x] **2.1: Core Utilities - Spark Session**
     *   [x] Implement `get_spark_session()` in `src/utils.py` (import SparkSession, basic local config, add `spark.jars.packages` for PostgreSQL driver).
     *   [x] Write `test_get_spark_session` in `tests/test_utils.py` (check instance type, app name, master, stop session).
-*   [ ] **2.2: Data Loading - CSV Loader Function**
-    *   [ ] Implement `load_csv_data(spark, path)` in `src/data_loader.py` (use `spark.read.csv`, logging, error handling).
-*   [ ] **2.3: Data Loading - CSV Loader Test**
-    *   [ ] Create `tests/test_data_loader.py`.
-    *   [ ] Create `tests/data/` directory.
-    *   [ ] Create `tests/data/sample_movies.csv`.
-    *   [ ] Implement `spark_session` fixture (scope="session", yield session, stop session).
-    *   [ ] Write `test_load_csv_data` using the fixture and sample CSV (check count, schema, types).
-    *   [ ] Write `test_load_csv_data_not_found` using `pytest.raises(AnalysisException)`.
-*   [ ] **2.4: Main Script - Integrate Spark and Load One Dataset**
-    *   [ ] Update `main.py` to import `get_spark_session`, `load_csv_data`.
-    *   [ ] Get SparkSession in `main`.
-    *   [ ] Add `try...finally` block to ensure `spark.stop()`.
-    *   [ ] Inside `try`, load *movies* dataset using config path and `load_csv_data`.
-    *   [ ] Log loaded DataFrame schema and count.
+*   [x] **2.2: Data Loading - CSV Loader Function**
+    *   [x] Implement `load_csv_data(spark, path)` in `src/data_loader.py` (use `spark.read.csv`, logging, error handling).
+*   [x] **2.3: Data Loading - CSV Loader Test**
+    *   [x] Create `tests/test_data_loader.py`.
+    *   [x] Create `tests/data/` directory.
+    *   [x] Create `tests/data/sample_movies.csv`.
+    *   [x] Implement `spark_session` fixture (scope="session", yield session, stop session).
+    *   [x] Write `test_load_csv_data` using the fixture and sample CSV (check count, schema, types).
+    *   [x] Write `test_load_csv_data_not_found` using `pytest.raises(AnalysisException)`.
+*   [x] **2.4: Main Script - Integrate Spark and Load One Dataset**
+    *   [x] Update `main.py` to import `get_spark_session`, `load_csv_data`.
+    *   [x] Get SparkSession in `main`.
+    *   [x] Add `try...finally` block to ensure `spark.stop()`.
+    *   [x] Inside `try`, load *movies* dataset using config path and `load_csv_data`.
+    *   [x] Log loaded DataFrame schema and count.
 
 ## Iteration 3: Cleaning Functions (Incremental)
 
-*   [ ] **3.1: Cleaning - Movies Data Function**
-    *   [ ] Implement `clean_movies(df)` in `src/cleaner.py` (drop null `movieId`, split `genres` to array).
-*   [ ] **3.2: Cleaning - Movies Data Test**
-    *   [ ] Create `tests/test_cleaner.py`.
-    *   [ ] Write `test_clean_movies` using sample DataFrame (assert null drops, genre array type, content).
-*   [ ] **3.3: Cleaning - Ratings Data Function**
-    *   [ ] Implement `clean_ratings(df)` in `src/cleaner.py` (filter rating range 0.5-5.0, drop null userId/movieId/rating).
-*   [ ] **3.4: Cleaning - Ratings Data Test**
-    *   [ ] Write `test_clean_ratings` in `tests/test_cleaner.py` using sample DataFrame (assert filtering and null drops).
-*   [ ] **3.5: Cleaning - Tags Data Function**
-    *   [ ] Implement `clean_tags(df)` in `src/cleaner.py` (drop null userId/movieId, filter null/empty tag, drop duplicates).
-*   [ ] **3.6: Cleaning - Tags Data Test**
-    *   [ ] Write `test_clean_tags` in `tests/test_cleaner.py` using sample DataFrame (assert filtering and duplicate drops).
-*   [ ] **3.7: Cleaning - Links Data Function**
-    *   [ ] Implement `clean_links(df)` in `src/cleaner.py` (drop null movieId/imdbId/tmdbId).
-*   [ ] **3.8: Cleaning - Links Data Test**
-    *   [ ] Write `test_clean_links` in `tests/test_cleaner.py` using sample DataFrame (assert null drops).
-*   [ ] **3.9: Main Script - Integrate All Cleaning Steps**
-    *   [ ] Update `main.py` to import all cleaners.
-    *   [ ] Load ratings, tags, links datasets.
-    *   [ ] Call corresponding cleaning function for each loaded DataFrame.
-    *   [ ] Log counts before/after cleaning for each. Add null checks after loading.
+*   [x] **3.1: Cleaning - Movies Data Function**
+    *   [x] Implement `clean_movies(df)` in `src/cleaner.py` (drop null `movieId`, split `genres` to array).
+*   [x] **3.2: Cleaning - Movies Data Test**
+    *   [x] Create `tests/test_cleaner.py`.
+    *   [x] Write `test_clean_movies` using sample DataFrame (assert null drops, genre array type, content).
+*   [x] **3.3: Cleaning - Ratings Data Function**
+    *   [x] Implement `clean_ratings(df)` in `src/cleaner.py` (filter rating range 0.5-5.0, drop null userId/movieId/rating).
+*   [x] **3.4: Cleaning - Ratings Data Test**
+    *   [x] Write `test_clean_ratings` in `tests/test_cleaner.py` using sample DataFrame (assert filtering and null drops).
+*   [x] **3.5: Cleaning - Tags Data Function**
+    *   [x] Implement `clean_tags(df)` in `src/cleaner.py` (drop null userId/movieId, filter null/empty tag, drop duplicates).
+*   [x] **3.6: Cleaning - Tags Data Test**
+    *   [x] Write `test_clean_tags` in `tests/test_cleaner.py` using sample DataFrame (assert filtering and duplicate drops).
+*   [x] **3.7: Cleaning - Links Data Function**
+    *   [x] Implement `clean_links(df)` in `src/cleaner.py` (drop null movieId/imdbId/tmdbId).
+*   [x] **3.8: Cleaning - Links Data Test**
+    *   [x] Write `test_clean_links` in `tests/test_cleaner.py` using sample DataFrame (assert null drops).
+*   [x] **3.9: Main Script - Integrate All Cleaning Steps**
+    *   [x] Update `main.py` to import all cleaners.
+    *   [x] Load ratings, tags, links datasets.
+    *   [x] Call corresponding cleaning function for each loaded DataFrame.
+    *   [x] Log counts before/after cleaning for each. Add null checks after loading.
 
 ## Iteration 4: Feature Engineering (Joining)
 

@@ -1,8 +1,10 @@
-import sys
 import logging
+import sys
 import time
-from src.utils import load_config, setup_logging
 
+from src.utils import load_config, setup_logging, get_spark_session
+from src.data_loader import load_csv_data
+from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 
 # Path to the configuration file
 CONFIG_PATH = "config.yaml"
@@ -42,7 +44,9 @@ if __name__ == "__main__":
         start_time = time.time()
 
         # Load configuration
-        logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+        logging.basicConfig(
+            level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+        )
         logging.info(f"Loading configuration from {CONFIG_PATH}...")
         config = load_config(CONFIG_PATH)
 
@@ -54,15 +58,58 @@ if __name__ == "__main__":
         logging.info("Movie Recommendation Pipeline Started")
         logging.info("=" * 50)
 
-        # Run the pipeline
-        success = run_pipeline(config)
+        spark = get_spark_session(config)
+        try:
+            # Load movies dataset
+            movies_path = config["storage"][config["storage"]["mode"]]["movies"]
+            movies_df = load_csv_data(spark, movies_path)
+            logging.info(f"Movies DataFrame schema: {movies_df.schema}")
+            logging.info(f"Movies DataFrame row count: {movies_df.count()}")
+            # Clean movies
+            cleaned_movies = clean_movies(movies_df)
+            logging.info(f"Cleaned Movies DataFrame row count: {cleaned_movies.count()}")
+
+            # Load ratings dataset
+            ratings_path = config["storage"][config["storage"]["mode"]]["ratings"]
+            ratings_df = load_csv_data(spark, ratings_path)
+            logging.info(f"Ratings DataFrame schema: {ratings_df.schema}")
+            logging.info(f"Ratings DataFrame row count: {ratings_df.count()}")
+            # Clean ratings
+            cleaned_ratings = clean_ratings(ratings_df)
+            logging.info(f"Cleaned Ratings DataFrame row count: {cleaned_ratings.count()}")
+
+            # Load tags dataset
+            tags_path = config["storage"][config["storage"]["mode"]]["tags"]
+            tags_df = load_csv_data(spark, tags_path)
+            logging.info(f"Tags DataFrame schema: {tags_df.schema}")
+            logging.info(f"Tags DataFrame row count: {tags_df.count()}")
+            # Clean tags
+            cleaned_tags = clean_tags(tags_df)
+            logging.info(f"Cleaned Tags DataFrame row count: {cleaned_tags.count()}")
+
+            # Load links dataset
+            links_path = config["storage"][config["storage"]["mode"]]["links"]
+            links_df = load_csv_data(spark, links_path)
+            logging.info(f"Links DataFrame schema: {links_df.schema}")
+            logging.info(f"Links DataFrame row count: {links_df.count()}")
+            # Clean links
+            cleaned_links = clean_links(links_df)
+            logging.info(f"Cleaned Links DataFrame row count: {cleaned_links.count()}")
+
+            # Run the pipeline (placeholder)
+            success = run_pipeline(config)
+        finally:
+            spark.stop()
+            logging.info("SparkSession stopped.")
 
         # Calculate execution time
         execution_time = time.time() - start_time
 
         if success:
             logging.info("=" * 50)
-            logging.info(f"Pipeline completed successfully in {execution_time:.2f} seconds")
+            logging.info(
+                f"Pipeline completed successfully in {execution_time:.2f} seconds"
+            )
             logging.info("=" * 50)
             sys.exit(0)
         else:
