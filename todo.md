@@ -82,23 +82,23 @@
 
 ## Iteration 4: Feature Engineering (Joining)
 
-*   [ ] **4.1: Feature Engineering - Basic Join Function**
-    *   [ ] Create `src/feature_engineer.py`.
-    *   [ ] Implement `join_dataframes(ratings_df, movies_df)` (inner join on `movieId`, select columns).
-*   [ ] **4.2: Feature Engineering - Basic Join Test**
-    *   [ ] Create `tests/test_feature_engineer.py`.
-    *   [ ] Write `test_join_dataframes_basic` using sample cleaned DFs (assert count, schema, values).
-*   [ ] **4.3: Feature Engineering - Optional Joins**
-    *   [ ] Modify `join_dataframes` signature for optional `tags_df`, `links_df`.
-    *   [ ] Implement left joins for tags (on userId, movieId) and links (on movieId) if DFs provided.
-    *   [ ] Update final column selection.
-*   [ ] **4.4: Feature Engineering - Optional Join Tests**
-    *   [ ] Write `test_join_dataframes_with_tags` (check count, schema, tag values/nulls).
-    *   [ ] Write `test_join_dataframes_all` (check count, schema, values from all sources).
-*   [ ] **4.5: Main Script - Integrate Joining**
-    *   [ ] Update `main.py` to import `join_dataframes`.
-    *   [ ] Call `join_dataframes` with cleaned DFs (ratings, movies, tags, links).
-    *   [ ] Log confirmation and resulting DataFrame info.
+*   [x] **4.1: Feature Engineering - Basic Join Function**
+    *   [x] Create `src/feature_engineer.py`.
+    *   [x] Implement `join_dataframes(ratings_df, movies_df)` (inner join on `movieId`, select columns).
+*   [x] **4.2: Feature Engineering - Basic Join Test**
+    *   [x] Create `tests/test_feature_engineer.py`.
+    *   [x] Write `test_join_dataframes_basic` using sample cleaned DFs (assert count, schema, values).
+*   [x] **4.3: Feature Engineering - Optional Joins**
+    *   [x] Modify `join_dataframes` signature for optional `tags_df`, `links_df`.
+    *   [x] Implement left joins for tags (on userId, movieId) and links (on movieId) if DFs provided.
+    *   [x] Update final column selection.
+*   [x] **4.4: Feature Engineering - Optional Join Tests**
+    *   [x] Write `test_join_dataframes_with_tags` (check count, schema, tag values/nulls).
+    *   [x] Write `test_join_dataframes_all` (check count, schema, values from all sources).
+*   [x] **4.5: Main Script - Integrate Joining**
+    *   [x] Update `main.py` to import `join_dataframes`.
+    *   [x] Call `join_dataframes` with cleaned DFs (ratings, movies, tags, links).
+    *   [x] Log confirmation and resulting DataFrame info.
 
 ## Iteration 5: ALS Model Training
 

@@ -1,11 +1,13 @@
 import logging
 import sys
 import time
+import os
 
 from src.utils import load_config, setup_logging, get_spark_session
 from src.data_loader import load_csv_data
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 from src.feature_engineer import join_dataframes
+from src.model import train_als_model
 
 # Path to the configuration file
 CONFIG_PATH = "config.yaml"
@@ -108,6 +110,15 @@ if __name__ == "__main__":
             logging.info(f"Joined DataFrame schema: {joined_df.schema}")
             logging.info(f"Joined DataFrame row count: {joined_df.count()}")
             logging.info(f"Sample rows from joined DataFrame: {joined_df.show(5, truncate=False)}")
+
+            # Train ALS model
+            model = train_als_model(joined_df, config)
+            logging.info("ALS model training complete.")
+            # Optional: Save model
+            if not os.path.exists("models"):
+                os.makedirs("models")
+            model.save("models/als_model")
+            logging.info("ALS model saved to models/als_model.")
 
             # Run the pipeline (placeholder)
             success = run_pipeline(config)
