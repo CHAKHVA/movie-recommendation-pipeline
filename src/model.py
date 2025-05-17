@@ -26,7 +26,7 @@ def train_als_model(data_df: DataFrame, config: dict) -> ALS:
             regParam=als_params.get("regParam", 0.1),
             alpha=als_params.get("alpha", 1.0),
             coldStartStrategy=als_params.get("coldStartStrategy", "drop"),
-            nonnegative=True
+            nonnegative=True,
         )
         logging.info(f"Training ALS model with params: {als._input_kwargs}")
         model = als.fit(data_df)
@@ -35,6 +35,7 @@ def train_als_model(data_df: DataFrame, config: dict) -> ALS:
     except Exception as e:
         logging.error(f"Error training ALS model: {e}")
         raise
+
 
 def generate_recommendations(model, top_n: int):
     """
@@ -49,12 +50,11 @@ def generate_recommendations(model, top_n: int):
     """
     recommendations = model.recommendForAllUsers(top_n)
     exploded = recommendations.select(
-        "userId",
-        explode("recommendations").alias("recommendation")
+        "userId", explode("recommendations").alias("recommendation")
     )
     final = exploded.select(
         "userId",
         col("recommendation.movieId").alias("movieId"),
-        col("recommendation.rating").alias("predicted_rating")
+        col("recommendation.rating").alias("predicted_rating"),
     )
     return final

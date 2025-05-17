@@ -1,11 +1,12 @@
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import avg, count
 
+
 def join_dataframes(
     ratings_df: DataFrame,
     movies_df: DataFrame,
     tags_df: DataFrame | None = None,
-    links_df: DataFrame | None = None
+    links_df: DataFrame | None = None,
 ) -> DataFrame:
     """
     Join ratings and movies DataFrames on movieId, and optionally join tags and links DataFrames.
@@ -33,6 +34,7 @@ def join_dataframes(
     selected_df = joined_df.select(*columns)
     return selected_df
 
+
 def calculate_movie_stats(ratings_df: DataFrame):
     """
     Calculate movie statistics from ratings DataFrame.
@@ -44,7 +46,6 @@ def calculate_movie_stats(ratings_df: DataFrame):
         DataFrame: DataFrame with movie statistics (movieId, avg_rating, rating_count).
     """
     stats_df = ratings_df.groupBy("movieId").agg(
-        avg("rating").alias("avg_rating"),
-        count("rating").alias("rating_count")
+        avg("rating").alias("avg_rating"), count("rating").alias("rating_count")
     )
     return stats_df

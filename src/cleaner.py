@@ -1,6 +1,7 @@
 from pyspark.sql import DataFrame
 from pyspark.sql.functions import col, split
 
+
 def clean_movies(df: DataFrame) -> DataFrame:
     """
     Clean the movies DataFrame by dropping rows with null movieId and splitting genres into an array.
@@ -17,6 +18,7 @@ def clean_movies(df: DataFrame) -> DataFrame:
     cleaned_df = cleaned_df.withColumn("genres", split(col("genres"), "\\|"))
     return cleaned_df
 
+
 def clean_ratings(df: DataFrame) -> DataFrame:
     """
     Clean the ratings DataFrame by filtering valid rating range and dropping nulls in userId, movieId, or rating.
@@ -30,6 +32,7 @@ def clean_ratings(df: DataFrame) -> DataFrame:
     cleaned_df = df.dropna(subset=["userId", "movieId", "rating"])
     cleaned_df = cleaned_df.filter((col("rating") >= 0.5) & (col("rating") <= 5.0))
     return cleaned_df
+
 
 def clean_tags(df: DataFrame) -> DataFrame:
     """
@@ -45,6 +48,7 @@ def clean_tags(df: DataFrame) -> DataFrame:
     cleaned_df = cleaned_df.filter(col("tag").isNotNull() & (col("tag") != ""))
     cleaned_df = cleaned_df.dropDuplicates(["userId", "movieId", "tag"])
     return cleaned_df
+
 
 def clean_links(df: DataFrame) -> DataFrame:
     """

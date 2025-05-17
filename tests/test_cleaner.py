@@ -2,22 +2,32 @@ import pytest
 from pyspark.sql import SparkSession, Row
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 
+
 def test_clean_movies(spark_session):
     data = [
-        Row(movieId=1, title="Toy Story (1995)", genres="Adventure|Animation|Children|Comedy|Fantasy"),
+        Row(
+            movieId=1,
+            title="Toy Story (1995)",
+            genres="Adventure|Animation|Children|Comedy|Fantasy",
+        ),
         Row(movieId=None, title="Missing MovieId", genres="Comedy|Drama"),
-        Row(movieId=2, title="Jumanji (1995)", genres="Adventure|Children|Fantasy")
+        Row(movieId=2, title="Jumanji (1995)", genres="Adventure|Children|Fantasy"),
     ]
     df = spark_session.createDataFrame(data)
     cleaned = clean_movies(df)
     # Should drop the row with null movieId
     assert cleaned.count() == 2
     # genres should be array type
-    genres_type = dict((f.name, f.dataType.typeName()) for f in cleaned.schema.fields)["genres"]
+    genres_type = dict((f.name, f.dataType.typeName()) for f in cleaned.schema.fields)[
+        "genres"
+    ]
     assert genres_type == "array"
     # Check content of genres array
     genres_lists = [row.genres for row in cleaned.collect()]
-    assert all(genre in genres_lists[0] for genre in ["Animation", "Children"]) or all(genre in genres_lists[1] for genre in ["Children", "Fantasy"])
+    assert all(genre in genres_lists[0] for genre in ["Animation", "Children"]) or all(
+        genre in genres_lists[1] for genre in ["Children", "Fantasy"]
+    )
+
 
 def test_clean_ratings(spark_session):
     data = [
@@ -38,7 +48,8 @@ def test_clean_ratings(spark_session):
     ratings = [row.rating for row in result]
     assert 4.0 in ratings
     assert 5.0 in ratings
-    assert 0.5 in ratings 
+    assert 0.5 in ratings
+
 
 def test_clean_tags(spark_session):
     data = [
@@ -60,7 +71,8 @@ def test_clean_tags(spark_session):
     tags = [row.tag for row in result]
     assert "funny" in tags
     assert "thriller" in tags
-    assert "drama" in tags 
+    assert "drama" in tags
+
 
 def test_clean_links(spark_session):
     data = [
@@ -77,4 +89,4 @@ def test_clean_links(spark_session):
     assert len(result) == 2
     movie_ids = [row.movieId for row in result]
     assert 1 in movie_ids
-    assert 5 in movie_ids 
+    assert 5 in movie_ids

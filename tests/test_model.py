@@ -3,6 +3,7 @@ from pyspark.sql import SparkSession, Row
 from pyspark.ml.recommendation import ALSModel
 from src.model import train_als_model, generate_recommendations
 
+
 def test_train_als_model(spark_session):
     # Sample data
     data = [
@@ -11,7 +12,7 @@ def test_train_als_model(spark_session):
         Row(userId=2, movieId=10, rating=5.0),
         Row(userId=2, movieId=30, rating=4.0),
         Row(userId=3, movieId=20, rating=3.0),
-        Row(userId=3, movieId=30, rating=4.5)
+        Row(userId=3, movieId=30, rating=4.5),
     ]
     df = spark_session.createDataFrame(data)
     # Dummy config
@@ -21,7 +22,7 @@ def test_train_als_model(spark_session):
             "maxIter": 5,
             "regParam": 0.1,
             "alpha": 1.0,
-            "coldStartStrategy": "drop"
+            "coldStartStrategy": "drop",
         }
     }
     model = train_als_model(df, config)
@@ -29,7 +30,8 @@ def test_train_als_model(spark_session):
     # Basic transform test
     predictions = model.transform(df)
     assert predictions.count() == df.count()
-    assert "prediction" in predictions.columns 
+    assert "prediction" in predictions.columns
+
 
 def test_generate_recommendations(spark_session):
     # Sample data
@@ -39,7 +41,7 @@ def test_generate_recommendations(spark_session):
         Row(userId=2, movieId=10, rating=5.0),
         Row(userId=2, movieId=30, rating=4.0),
         Row(userId=3, movieId=20, rating=3.0),
-        Row(userId=3, movieId=30, rating=4.5)
+        Row(userId=3, movieId=30, rating=4.5),
     ]
     df = spark_session.createDataFrame(data)
     # Dummy config
@@ -49,7 +51,7 @@ def test_generate_recommendations(spark_session):
             "maxIter": 5,
             "regParam": 0.1,
             "alpha": 1.0,
-            "coldStartStrategy": "drop"
+            "coldStartStrategy": "drop",
         }
     }
     model = train_als_model(df, config)

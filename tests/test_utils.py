@@ -14,20 +14,12 @@ def test_load_config(tmp_path):
     # Create a temporary config file
     config_path = tmp_path / "test_config.yaml"
     test_config = {
-        "storage": {
-            "mode": "local"
-        },
-        "postgres": {
-            "host": "localhost",
-            "port": 5432
-        },
-        "als": {
-            "rank": 10,
-            "maxIter": 15
-        }
+        "storage": {"mode": "local"},
+        "postgres": {"host": "localhost", "port": 5432},
+        "als": {"rank": 10, "maxIter": 15},
     }
 
-    with open(config_path, 'w') as f:
+    with open(config_path, "w") as f:
         yaml.dump(test_config, f)
 
     # Test successful config loading
@@ -44,7 +36,7 @@ def test_load_config(tmp_path):
 
     # Test empty file error
     empty_path = tmp_path / "empty.yaml"
-    with open(empty_path, 'w') as f:
+    with open(empty_path, "w") as f:
         pass  # Create empty file
 
     with pytest.raises(ValueError, match="Configuration file is empty"):
@@ -52,7 +44,7 @@ def test_load_config(tmp_path):
 
     # Test invalid YAML
     invalid_path = tmp_path / "invalid.yaml"
-    with open(invalid_path, 'w') as f:
+    with open(invalid_path, "w") as f:
         f.write("this: that: invalid")
 
     with pytest.raises(yaml.YAMLError):
@@ -65,14 +57,9 @@ def test_get_nested_config():
         "postgres": {
             "host": "localhost",
             "port": 5432,
-            "credentials": {
-                "user": "postgres",
-                "password": "secretpass"
-            }
+            "credentials": {"user": "postgres", "password": "secretpass"},
         },
-        "als": {
-            "rank": 10
-        }
+        "als": {"rank": 10},
     }
 
     # Test successful retrieval
@@ -87,18 +74,16 @@ def test_get_nested_config():
     assert get_nested_config(config, "postgres.username", None) is None
 
     # Test deeply nested nonexistent path
-    assert get_nested_config(config, "a.very.deeply.nested.path", "default") == "default"
+    assert (
+        get_nested_config(config, "a.very.deeply.nested.path", "default") == "default"
+    )
+
 
 def test_setup_logging(tmp_path):
     """Test setting up logging configuration."""
     # Create a dummy config
     log_file = tmp_path / "test_log.log"
-    config = {
-        "logging": {
-            "file": str(log_file),
-            "level": "INFO"
-        }
-    }
+    config = {"logging": {"file": str(log_file), "level": "INFO"}}
 
     # Reset logging before testing
     for handler in logging.root.handlers[:]:
@@ -136,11 +121,11 @@ def test_setup_logging(tmp_path):
 
     # Verify log file was created and contains the message
     assert os.path.exists(log_file)
-    with open(log_file, 'r') as f:
+    with open(log_file, "r") as f:
         log_content = f.read()
         assert test_msg in log_content
         # Check format with regex (timestamp - level - message)
-        timestamp_pattern = r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}'
+        timestamp_pattern = r"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}"
         expected_pattern = f"{timestamp_pattern} - INFO - {test_msg}"
         assert re.search(expected_pattern, log_content)
 
@@ -151,7 +136,7 @@ def test_setup_logging_invalid_level(tmp_path):
     config = {
         "logging": {
             "file": str(log_file),
-            "level": "INVALID_LEVEL"  # Invalid level
+            "level": "INVALID_LEVEL",  # Invalid level
         }
     }
 
@@ -170,12 +155,7 @@ def test_setup_logging_create_directory(tmp_path):
     log_dir = tmp_path / "logs" / "nested"
     log_file = log_dir / "test_log.log"
 
-    config = {
-        "logging": {
-            "file": str(log_file),
-            "level": "DEBUG"
-        }
-    }
+    config = {"logging": {"file": str(log_file), "level": "DEBUG"}}
 
     # Reset logging
     for handler in logging.root.handlers[:]:
@@ -191,6 +171,7 @@ def test_setup_logging_create_directory(tmp_path):
     logging.debug("Debug test message")
     assert os.path.exists(log_file)
 
+
 def test_get_spark_session():
     """Test creating a SparkSession."""
     # Test with default parameters
@@ -201,7 +182,10 @@ def test_get_spark_session():
         assert isinstance(spark, SparkSession)
 
         # Check if master is set to local
-        assert spark.sparkContext.master is not None and spark.sparkContext.master.startswith("local")
+        assert (
+            spark.sparkContext.master is not None
+            and spark.sparkContext.master.startswith("local")
+        )
 
         # Check if PostgreSQL JDBC driver is configured
         jdbc_packages = spark.conf.get("spark.jars.packages")
@@ -223,8 +207,8 @@ def test_get_spark_session_with_config():
             "log_level": "WARN",
             "config": {
                 "spark.sql.shuffle.partitions": "10",
-                "spark.executor.memory": "1g"
-            }
+                "spark.executor.memory": "1g",
+            },
         }
     }
 
@@ -243,6 +227,7 @@ def test_get_spark_session_with_config():
         # Always stop the SparkSession
         if spark:
             spark.stop()
+
 
 if __name__ == "__main__":
     pytest.main()

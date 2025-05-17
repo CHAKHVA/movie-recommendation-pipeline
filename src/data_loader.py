@@ -5,7 +5,9 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.errors.exceptions.base import AnalysisException, ParseException
 
 
-def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None = None) -> DataFrame:
+def load_csv_data(
+    spark: SparkSession, path: str, options: dict[str, Any] | None = None
+) -> DataFrame:
     """
     Load data from a CSV file into a Spark DataFrame.
 
@@ -36,10 +38,7 @@ def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None
     logging.info(f"Loading CSV data from: {path}")
 
     # Set default options
-    read_options = {
-        "header": "true",
-        "inferSchema": "true"
-    }
+    read_options = {"header": "true", "inferSchema": "true"}
 
     # Update with any user-provided options
     if options:
@@ -47,7 +46,9 @@ def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None
 
     try:
         # Check if the file exists (for local files)
-        if path.startswith("file://") or (not path.startswith("s3://") and not path.startswith("hdfs://")):
+        if path.startswith("file://") or (
+            not path.startswith("s3://") and not path.startswith("hdfs://")
+        ):
             local_path = path.replace("file://", "")
             if not os.path.exists(local_path):
                 raise FileNotFoundError(f"CSV file not found at path: {local_path}")
@@ -58,7 +59,9 @@ def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None
         # Log successful loading
         row_count = df.count()
         column_count = len(df.columns)
-        logging.info(f"Successfully loaded CSV data: {row_count} rows, {column_count} columns")
+        logging.info(
+            f"Successfully loaded CSV data: {row_count} rows, {column_count} columns"
+        )
         logging.debug(f"DataFrame schema: {df.schema}")
 
         return df
@@ -78,21 +81,3 @@ def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None
     except Exception as e:
         logging.error(f"Unexpected error loading CSV file: {str(e)}")
         raise
-
-
-def load_movielens_dataset(spark: SparkSession, config: dict[str, Any]) -> dict[str, DataFrame]:
-    """
-    Load the MovieLens dataset files into Spark DataFrames.
-
-    Args:
-        spark (SparkSession): The active Spark session.
-        config (dict[str, Any]): Configuration dictionary containing paths to the dataset files.
-
-    Returns:
-        dict[str, DataFrame]: Dictionary mapping dataset names to their respective DataFrames.
-
-    Note:
-        This is a placeholder function for future implementation.
-    """
-    # TODO: Implement this function in a future step
-    return {}

@@ -71,7 +71,9 @@ if __name__ == "__main__":
             logging.info(f"Movies DataFrame row count: {movies_df.count()}")
             # Clean movies
             cleaned_movies = clean_movies(movies_df)
-            logging.info(f"Cleaned Movies DataFrame row count: {cleaned_movies.count()}")
+            logging.info(
+                f"Cleaned Movies DataFrame row count: {cleaned_movies.count()}"
+            )
 
             # Load ratings dataset
             ratings_path = config["storage"][config["storage"]["mode"]]["ratings"]
@@ -80,7 +82,9 @@ if __name__ == "__main__":
             logging.info(f"Ratings DataFrame row count: {ratings_df.count()}")
             # Clean ratings
             cleaned_ratings = clean_ratings(ratings_df)
-            logging.info(f"Cleaned Ratings DataFrame row count: {cleaned_ratings.count()}")
+            logging.info(
+                f"Cleaned Ratings DataFrame row count: {cleaned_ratings.count()}"
+            )
 
             # Load tags dataset
             tags_path = config["storage"][config["storage"]["mode"]]["tags"]
@@ -105,12 +109,16 @@ if __name__ == "__main__":
                 cleaned_ratings,
                 cleaned_movies,
                 tags_df=cleaned_tags,
-                links_df=cleaned_links
+                links_df=cleaned_links,
             )
-            logging.info("Successfully joined ratings, movies, tags, and links DataFrames.")
+            logging.info(
+                "Successfully joined ratings, movies, tags, and links DataFrames."
+            )
             logging.info(f"Joined DataFrame schema: {joined_df.schema}")
             logging.info(f"Joined DataFrame row count: {joined_df.count()}")
-            logging.info(f"Sample rows from joined DataFrame: {joined_df.show(5, truncate=False)}")
+            logging.info(
+                f"Sample rows from joined DataFrame: {joined_df.show(5, truncate=False)}"
+            )
 
             # Train ALS model
             model = train_als_model(joined_df, config)
@@ -128,17 +136,31 @@ if __name__ == "__main__":
 
             # Write recommendations to PostgreSQL
             db_config = config.get("postgres", {})
-            table_name = config.get("output", {}).get("tables", {}).get("recommendations", "recommendations")
+            table_name = (
+                config.get("output", {})
+                .get("tables", {})
+                .get("recommendations", "recommendations")
+            )
             write_to_postgres(recommendations, db_config, table_name)
-            logging.info(f"Recommendations written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}.")
+            logging.info(
+                f"Recommendations written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}."
+            )
 
             # Calculate movie statistics
             movie_stats_df = calculate_movie_stats(cleaned_ratings)
-            logging.info(f"Calculated movie statistics for {movie_stats_df.count()} movies.")
+            logging.info(
+                f"Calculated movie statistics for {movie_stats_df.count()} movies."
+            )
             # Write movie statistics to PostgreSQL
-            table_name = config.get("output", {}).get("tables", {}).get("movie_stats", "movie_stats")
+            table_name = (
+                config.get("output", {})
+                .get("tables", {})
+                .get("movie_stats", "movie_stats")
+            )
             write_to_postgres(movie_stats_df, db_config, table_name)
-            logging.info(f"Movie statistics written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}.")
+            logging.info(
+                f"Movie statistics written to PostgreSQL table {db_config.get('schema', 'public')}.{table_name}."
+            )
 
             # Run the pipeline (placeholder)
             success = run_pipeline(config)

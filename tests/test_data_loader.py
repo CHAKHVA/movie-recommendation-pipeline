@@ -1,8 +1,8 @@
 import os
 import pytest
-from pyspark.sql import SparkSession
 from pyspark.errors.exceptions.base import AnalysisException
 from src.data_loader import load_csv_data
+
 
 def test_load_csv_data(spark_session):
     sample_path = os.path.join(os.path.dirname(__file__), "data/sample_movies.csv")
@@ -18,6 +18,7 @@ def test_load_csv_data(spark_session):
     assert schema["title"] == "string"
     assert schema["genres"] == "string"
 
+
 def test_load_csv_data_not_found(spark_session):
     with pytest.raises(Exception):
-        load_csv_data(spark_session, "tests/data/nonexistent.csv") 
+        load_csv_data(spark_session, "tests/data/nonexistent.csv")

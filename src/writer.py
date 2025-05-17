@@ -19,15 +19,17 @@ def write_to_postgres(df: DataFrame, db_config: dict, table_name: str) -> None:
         properties = {
             "user": db_config["user"],
             "password": db_config["password"],
-            "driver": "org.postgresql.Driver"
+            "driver": "org.postgresql.Driver",
         }
         df.write.jdbc(
             url=jdbc_url,
             table=f"{db_config['schema']}.{table_name}",
             mode="overwrite",
-            properties=properties
+            properties=properties,
         )
-        logging.info(f"Successfully wrote DataFrame to PostgreSQL table {db_config['schema']}.{table_name}.")
+        logging.info(
+            f"Successfully wrote DataFrame to PostgreSQL table {db_config['schema']}.{table_name}."
+        )
     except Exception as e:
         logging.error(f"Error writing DataFrame to PostgreSQL: {e}")
         raise

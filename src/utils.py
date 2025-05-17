@@ -25,7 +25,7 @@ def load_config(path: str) -> dict[str, Any]:
         raise FileNotFoundError(f"Configuration file not found at: {path}")
 
     try:
-        with open(path, 'r') as config_file:
+        with open(path, "r") as config_file:
             config = yaml.safe_load(config_file)
 
         if config is None:
@@ -60,7 +60,7 @@ def get_nested_config(config: dict[str, Any], keys: str, default=None) -> Any:
         'default_user'
     """
     current = config
-    for key in keys.split('.'):
+    for key in keys.split("."):
         if isinstance(current, dict) and key in current:
             current = current[key]
         else:
@@ -89,17 +89,17 @@ def setup_logging(config: dict[str, Any]) -> None:
         OSError: If log directory creation fails.
     """
     # Extract logging configuration with defaults
-    logging_config = config.get('logging', {})
-    log_file = logging_config.get('file', 'logs/pipeline.log')
-    log_level_str = logging_config.get('level', 'INFO').upper()
+    logging_config = config.get("logging", {})
+    log_file = logging_config.get("file", "logs/pipeline.log")
+    log_level_str = logging_config.get("level", "INFO").upper()
 
     # Map log level string to logging constant
     log_level_map = {
-        'DEBUG': logging.DEBUG,
-        'INFO': logging.INFO,
-        'WARNING': logging.WARNING,
-        'ERROR': logging.ERROR,
-        'CRITICAL': logging.CRITICAL
+        "DEBUG": logging.DEBUG,
+        "INFO": logging.INFO,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL,
     }
 
     log_level = log_level_map.get(log_level_str, logging.INFO)
@@ -113,27 +113,24 @@ def setup_logging(config: dict[str, Any]) -> None:
             raise OSError(f"Failed to create log directory {log_dir}: {str(e)}")
 
     # Configure logging with both file and console handlers
-    handlers = [
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
+    handlers = [logging.FileHandler(log_file), logging.StreamHandler()]
 
     # Configure logging format
-    log_format = '%(asctime)s - %(levelname)s - %(message)s'
-    date_format = '%Y-%m-%d %H:%M:%S'
+    log_format = "%(asctime)s - %(levelname)s - %(message)s"
+    date_format = "%Y-%m-%d %H:%M:%S"
 
     # Configure the root logger
     logging.basicConfig(
-        level=log_level,
-        format=log_format,
-        datefmt=date_format,
-        handlers=handlers
+        level=log_level, format=log_format, datefmt=date_format, handlers=handlers
     )
 
     # Log the setup completion
     logging.info(f"Logging configured: level={log_level_str}, file={log_file}")
 
-def get_spark_session(config: dict[str, Any] | None = None, app_name: str = "MovieRecommendation") -> SparkSession:
+
+def get_spark_session(
+    config: dict[str, Any] | None = None, app_name: str = "MovieRecommendation"
+) -> SparkSession:
     """
     Create or get a configured SparkSession for the pipeline.
 
@@ -160,16 +157,16 @@ def get_spark_session(config: dict[str, Any] | None = None, app_name: str = "Mov
     master = "local[*]"
 
     # If config is provided, use it to override defaults
-    if config and 'spark' in config:
-        spark_config = config['spark']
+    if config and "spark" in config:
+        spark_config = config["spark"]
 
         # Override app_name if specified in config
-        if 'app_name' in spark_config:
-            builder = builder.appName(spark_config['app_name'])
+        if "app_name" in spark_config:
+            builder = builder.appName(spark_config["app_name"])
 
         # Override master if specified in config
-        if 'master' in spark_config:
-            master = spark_config['master']
+        if "master" in spark_config:
+            master = spark_config["master"]
 
     # Set the master
     builder = builder.master(master)
@@ -178,17 +175,19 @@ def get_spark_session(config: dict[str, Any] | None = None, app_name: str = "Mov
     builder = builder.config("spark.jars.packages", "org.postgresql:postgresql:42.7.5")
 
     # Add any additional configuration options from the config
-    if config and 'spark' in config and 'config' in config['spark']:
-        for key, value in config['spark']['config'].items():
+    if config and "spark" in config and "config" in config["spark"]:
+        for key, value in config["spark"]["config"].items():
             builder = builder.config(key, value)
 
     # Create or get the SparkSession
     spark = builder.getOrCreate()
 
     # Set log level if specified in config
-    if config and 'spark' in config and 'log_level' in config['spark']:
-        spark.sparkContext.setLogLevel(config['spark']['log_level'])
+    if config and "spark" in config and "log_level" in config["spark"]:
+        spark.sparkContext.setLogLevel(config["spark"]["log_level"])
 
-    logging.info(f"Created SparkSession with appName={spark.sparkContext.appName} and master={spark.sparkContext.master}")
+    logging.info(
+        f"Created SparkSession with appName={spark.sparkContext.appName} and master={spark.sparkContext.master}"
+    )
 
     return spark
