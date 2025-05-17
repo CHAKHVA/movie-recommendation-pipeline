@@ -154,20 +154,20 @@
 
 ## Iteration 9: S3 Integration & Final Polish
 
-*   [ ] **9.1: S3 Config & Spark Session Update**
-    *   [ ] Update `config.yaml` paths to use `s3a://` URIs.
-    *   [ ] Update `get_spark_session` in `src/utils.py` to add `hadoop-aws` JAR to `spark.jars.packages`.
-    *   [ ] Add comments in `get_spark_session` explaining S3 credential configuration (env vars, SparkConf).
-*   [ ] **9.2: S3 Testing Considerations**
-    *   [ ] Manually test pipeline against actual S3 bucket (requires data upload & AWS credential setup).
-    *   [ ] Add notes to relevant tests (`test_data_loader.py`) about S3 testing requiring mocks (`moto`) or integration setup.
-*   [ ] **9.4: Logging Review**
-    *   [ ] Review all `logging.info/warning/error` messages throughout the code for clarity and usefulness.
-*   [ ] **9.5: Documentation - README.md**
-    *   [ ] Populate `README.md` with all sections (Overview, Stack, Structure, Setup, Config, Run, Test, Enhancements). Use Markdown formatting.
-*   [ ] **9.6: Final Testing**
-    *   [ ] Run `pytest` and ensure all tests pass (including PostgreSQL integration tests if feasible).
-    *   [ ] Run the full pipeline `python main.py` using S3 paths (if configured) and verify output in PostgreSQL.
+*   [x] **9.1: S3 Config & Spark Session Update**
+    *   [x] Update `config.yaml` paths to use `s3a://` URIs.
+    *   [x] Update `get_spark_session` in `src/utils.py` to add `hadoop-aws` JAR to `spark.jars.packages`.
+    *   [x] Add comments in `get_spark_session` explaining S3 credential configuration (env vars, SparkConf).
+*   [x] **9.2: S3 Testing Considerations**
+    *   [x] Manually test pipeline against actual S3 bucket (requires data upload & AWS credential setup).
+    *   [x] Add notes to relevant tests (`test_data_loader.py`) about S3 testing requiring mocks (`moto`) or integration setup.
+*   [x] **9.4: Logging Review**
+    *   [x] Review all `logging.info/warning/error` messages throughout the code for clarity and usefulness.
+*   [x] **9.5: Documentation - README.md**
+    *   [x] Populate `README.md` with all sections (Overview, Stack, Structure, Setup, Config, Run, Test, Enhancements). Use Markdown formatting.
+*   [x] **9.6: Final Testing**
+    *   [x] Run `pytest` and ensure all tests pass (including PostgreSQL integration tests if feasible).
+    *   [x] Run the full pipeline `python main.py` using S3 paths (if configured) and verify output in PostgreSQL.
 
 ## Post-Completion
 

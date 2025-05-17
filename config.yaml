@@ -12,10 +12,10 @@ storage:
   s3:
     bucket: "dev-movie-ratings-data"
     paths:
-      movies: "s3://dev-movie-ratings-data/data/movies.csv"
-      ratings: "s3://dev-movie-ratings-data/data/ratings.csv"
-      tags: "s3://dev-movie-ratings-data/data/tags.csv"
-      links: "s3://dev-movie-ratings-data/data/links.csv"
+      movies: "s3a://dev-movie-ratings-data/data/movies.csv"
+      ratings: "s3a://dev-movie-ratings-data/data/ratings.csv"
+      tags: "s3a://dev-movie-ratings-data/data/tags.csv"
+      links: "s3a://dev-movie-ratings-data/data/links.csv"
     region: "us-central-1"
 
 # Database Configuration

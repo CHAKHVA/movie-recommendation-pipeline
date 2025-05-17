@@ -156,6 +156,12 @@ def get_spark_session(
     Returns:
         SparkSession: The configured SparkSession instance.
 
+    Note:
+        For S3 access, the following environment variables should be set:
+        - AWS_ACCESS_KEY_ID: Your AWS access key
+        - AWS_SECRET_ACCESS_KEY: Your AWS secret key
+        - AWS_SESSION_TOKEN: (Optional) Your AWS session token if using temporary credentials
+
     Example:
         >>> config = load_config("config.yaml")
         >>> spark = get_spark_session(config)
@@ -184,9 +190,18 @@ def get_spark_session(
     # Set the master
     builder = builder.master(master)
 
-    # Add PostgreSQL JDBC driver
-    builder = builder.config("spark.jars.packages", "org.postgresql:postgresql:42.7.5")
+    # Add required packages for PostgreSQL and S3 access
+    packages = [
+        "org.postgresql:postgresql:42.7.5",  # PostgreSQL JDBC driver
+        "org.apache.hadoop:hadoop-aws:3.3.4",  # Hadoop AWS support
+        "com.amazonaws:aws-java-sdk-bundle:1.12.262"  # AWS SDK
+    ]
+    builder = builder.config("spark.jars.packages", ",".join(packages))
 
+    # Configure S3 access
+    builder = builder.config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
+    builder = builder.config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
+    
     # Add any additional configuration options from the config
     if config and "spark" in config and "config" in config["spark"]:
         for key, value in config["spark"]["config"].items():
