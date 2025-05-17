@@ -8,7 +8,7 @@ Note on S3 Testing:
        - Set environment variables: AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
        - Use a dedicated test bucket with test data
        - Mark tests with @pytest.mark.integration
-    
+
     2. Mock Testing (Recommended for local development):
        - Use moto library to mock S3
        - No AWS credentials required
@@ -55,30 +55,30 @@ def test_load_csv_data_not_found(spark_session):
 def test_load_csv_data_from_s3(spark_session):
     """
     Test loading CSV data from S3.
-    
+
     This test requires:
     1. AWS credentials set in environment variables:
        - AWS_ACCESS_KEY_ID
        - AWS_SECRET_ACCESS_KEY
        - AWS_SESSION_TOKEN (optional)
-    
+
     2. Test data uploaded to S3:
        - Bucket: dev-movie-ratings-data
        - Path: data/test/sample_movies.csv
-    
+
     To run this test:
     ```bash
     # Set AWS credentials
     export AWS_ACCESS_KEY_ID=your_access_key
     export AWS_SECRET_ACCESS_KEY=your_secret_key
-    
+
     # Run only integration tests
     pytest -v -m integration tests/test_data_loader.py
     ```
     """
     s3_path = "s3a://dev-movie-ratings-data/data/test/sample_movies.csv"
     df = load_csv_data(spark_session, s3_path)
-    
+
     # Check row count
     assert df.count() == 3
     # Check schema

@@ -194,14 +194,19 @@ def get_spark_session(
     packages = [
         "org.postgresql:postgresql:42.7.5",  # PostgreSQL JDBC driver
         "org.apache.hadoop:hadoop-aws:3.3.4",  # Hadoop AWS support
-        "com.amazonaws:aws-java-sdk-bundle:1.12.262"  # AWS SDK
+        "com.amazonaws:aws-java-sdk-bundle:1.12.262",  # AWS SDK
     ]
     builder = builder.config("spark.jars.packages", ",".join(packages))
 
     # Configure S3 access
-    builder = builder.config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem")
-    builder = builder.config("spark.hadoop.fs.s3a.aws.credentials.provider", "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider")
-    
+    builder = builder.config(
+        "spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem"
+    )
+    builder = builder.config(
+        "spark.hadoop.fs.s3a.aws.credentials.provider",
+        "org.apache.hadoop.fs.s3a.SimpleAWSCredentialsProvider",
+    )
+
     # Add any additional configuration options from the config
     if config and "spark" in config and "config" in config["spark"]:
         for key, value in config["spark"]["config"].items():

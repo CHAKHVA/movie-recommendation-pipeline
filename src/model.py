@@ -1,10 +1,11 @@
-from pyspark.ml.recommendation import ALS
-from pyspark.sql import DataFrame
 import logging
-from pyspark.sql.functions import explode, col
+
+from pyspark.ml.recommendation import ALS, ALSModel
+from pyspark.sql import DataFrame
+from pyspark.sql.functions import col, explode
 
 
-def train_als_model(data_df: DataFrame, config: dict) -> ALS:
+def train_als_model(data_df: DataFrame, config: dict) -> ALSModel:
     """
     Train an ALS model using the provided DataFrame and configuration.
 
