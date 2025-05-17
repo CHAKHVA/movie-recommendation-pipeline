@@ -1,11 +1,11 @@
 import logging
 import os
-from typing import Dict, Any
+from typing import Any
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.errors.exceptions.base import AnalysisException, ParseException
 
 
-def load_csv_data(spark: SparkSession, path: str, options: Dict[str, Any] | None = None) -> DataFrame:
+def load_csv_data(spark: SparkSession, path: str, options: dict[str, Any] | None = None) -> DataFrame:
     """
     Load data from a CSV file into a Spark DataFrame.
 
@@ -13,7 +13,7 @@ def load_csv_data(spark: SparkSession, path: str, options: Dict[str, Any] | None
         spark (SparkSession): The active Spark session.
         path (str): Path to the CSV file. Can be a local path or a supported
                     remote path (e.g., s3://, hdfs://).
-        options (Dict[str, Any] | None): Dictionary of options to pass to the CSV reader.
+        options (dict[str, Any] | None): Dictionary of options to pass to the CSV reader.
                     Defaults to None, which uses standard options (header=True, inferSchema=True).
 
     Returns:
@@ -80,16 +80,16 @@ def load_csv_data(spark: SparkSession, path: str, options: Dict[str, Any] | None
         raise
 
 
-def load_movielens_dataset(spark: SparkSession, config: Dict[str, Any]) -> Dict[str, DataFrame]:
+def load_movielens_dataset(spark: SparkSession, config: dict[str, Any]) -> dict[str, DataFrame]:
     """
     Load the MovieLens dataset files into Spark DataFrames.
 
     Args:
         spark (SparkSession): The active Spark session.
-        config (Dict[str, Any]): Configuration dictionary containing paths to the dataset files.
+        config (dict[str, Any]): Configuration dictionary containing paths to the dataset files.
 
     Returns:
-        Dict[str, DataFrame]: Dictionary mapping dataset names to their respective DataFrames.
+        dict[str, DataFrame]: Dictionary mapping dataset names to their respective DataFrames.
 
     Note:
         This is a placeholder function for future implementation.

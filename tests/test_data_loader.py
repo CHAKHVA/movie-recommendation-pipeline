@@ -4,12 +4,6 @@ from pyspark.sql import SparkSession
 from pyspark.errors.exceptions.base import AnalysisException
 from src.data_loader import load_csv_data
 
-@pytest.fixture(scope="session")
-def spark_session():
-    spark = SparkSession.builder.master("local[1]").appName("pytest-movie-pipeline").getOrCreate()
-    yield spark
-    spark.stop()
-
 def test_load_csv_data(spark_session):
     sample_path = os.path.join(os.path.dirname(__file__), "data/sample_movies.csv")
     df = load_csv_data(spark_session, sample_path)

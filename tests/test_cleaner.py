@@ -2,12 +2,6 @@ import pytest
 from pyspark.sql import SparkSession, Row
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 
-@pytest.fixture(scope="session")
-def spark_session():
-    spark = SparkSession.builder.master("local[1]").appName("pytest-cleaner").getOrCreate()
-    yield spark
-    spark.stop()
-
 def test_clean_movies(spark_session):
     data = [
         Row(movieId=1, title="Toy Story (1995)", genres="Adventure|Animation|Children|Comedy|Fantasy"),
@@ -23,7 +17,7 @@ def test_clean_movies(spark_session):
     assert genres_type == "array"
     # Check content of genres array
     genres_lists = [row.genres for row in cleaned.collect()]
-    assert ["Animation", "Children"] in genres_lists[0] or ["Children", "Fantasy"] in genres_lists[1]
+    assert all(genre in genres_lists[0] for genre in ["Animation", "Children"]) or all(genre in genres_lists[1] for genre in ["Children", "Fantasy"])
 
 def test_clean_ratings(spark_session):
     data = [
@@ -56,12 +50,13 @@ def test_clean_tags(spark_session):
         Row(userId=6, movieId=6, tag="funny"),  # duplicate tag for same user/movie
         Row(userId=6, movieId=6, tag="funny"),  # duplicate tag for same user/movie
         Row(userId=7, movieId=7, tag="thriller"),
+        Row(userId=8, movieId=8, tag="drama"),  # valid drama tag
     ]
     df = spark_session.createDataFrame(data)
     cleaned = clean_tags(df)
     # Should only keep rows with valid userId, movieId, non-empty tag, and no duplicates
     result = cleaned.select("userId", "movieId", "tag").collect()
-    assert len(result) == 3
+    assert len(result) == 4
     tags = [row.tag for row in result]
     assert "funny" in tags
     assert "thriller" in tags

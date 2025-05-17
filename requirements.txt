@@ -1,7 +1,8 @@
 pyspark
-pandas
 boto3
 psycopg2-binary
 pyyaml
 pytest
-python-dotenv
+pytest-spark
+numpy
+setuptools

@@ -3,12 +3,6 @@ from pyspark.sql import SparkSession, Row
 from pyspark.ml.recommendation import ALSModel
 from src.model import train_als_model, generate_recommendations
 
-@pytest.fixture(scope="session")
-def spark_session():
-    spark = SparkSession.builder.master("local[1]").appName("pytest-model").getOrCreate()
-    yield spark
-    spark.stop()
-
 def test_train_als_model(spark_session):
     # Sample data
     data = [
@@ -67,7 +61,7 @@ def test_generate_recommendations(spark_session):
     # Assert count per user <= top_n
     user_counts = recommendations.groupBy("userId").count().collect()
     for row in user_counts:
-        assert row.count <= top_n
+        assert row["count"] <= top_n
     # Assert rating type
     for row in recommendations.collect():
-        assert isinstance(row.predicted_rating, float) 
+        assert isinstance(row.predicted_rating, float)

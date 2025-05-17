@@ -1,23 +1,22 @@
-import os
+# import os
 import pytest
 from pyspark.sql import SparkSession, Row
 from src.writer import write_to_postgres
+from src.utils import load_config
 
-# Test DB config (use environment variables or a safe method)
-DB_CONFIG = {
-    "host": os.getenv("TEST_DB_HOST", "localhost"),
-    "port": int(os.getenv("TEST_DB_PORT", 5432)),
-    "database": os.getenv("TEST_DB_NAME", "test_moviedb"),
-    "user": os.getenv("TEST_DB_USER", "test_user"),
-    "password": os.getenv("TEST_DB_PASSWORD", "test_password"),
-    "schema": "public"
-}
+# # Test DB config (use environment variables or a safe method)
+# DB_CONFIG = {
+#     "host": os.getenv("TEST_DB_HOST", "localhost"),
+#     "port": int(os.getenv("TEST_DB_PORT", 5432)),
+#     "database": os.getenv("TEST_DB_NAME", "test_moviedb"),
+#     "user": os.getenv("TEST_DB_USER", "test_user"),
+#     "password": os.getenv("TEST_DB_PASSWORD", "test_password"),
+#     "schema": "public"
+# }
 
-@pytest.fixture(scope="session")
-def spark_session():
-    spark = SparkSession.builder.master("local[1]").appName("pytest-writer").getOrCreate()
-    yield spark
-    spark.stop()
+# Load configuration from config.yaml
+config = load_config("config.yaml")
+DB_CONFIG = config["postgres"]
 
 def test_write_to_postgres(spark_session):
     # Sample data

@@ -34,6 +34,8 @@ def load_config(path: str) -> dict[str, Any]:
         return config
     except yaml.YAMLError as e:
         raise yaml.YAMLError(f"Error parsing YAML file {path}: {str(e)}")
+    except ValueError as e:
+        raise ValueError(f"Invalid configuration in {path}: {str(e)}")
     except Exception as e:
         raise Exception(f"Unexpected error loading configuration from {path}: {str(e)}")
 
@@ -173,7 +175,7 @@ def get_spark_session(config: dict[str, Any] | None = None, app_name: str = "Mov
     builder = builder.master(master)
 
     # Add PostgreSQL JDBC driver
-    builder = builder.config("spark.jars.packages", "org.postgresql:postgresql:42.6.0")
+    builder = builder.config("spark.jars.packages", "org.postgresql:postgresql:42.7.5")
 
     # Add any additional configuration options from the config
     if config and 'spark' in config and 'config' in config['spark']:

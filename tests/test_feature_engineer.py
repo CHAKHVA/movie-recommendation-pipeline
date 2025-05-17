@@ -2,12 +2,6 @@ import pytest
 from pyspark.sql import SparkSession, Row
 from src.feature_engineer import join_dataframes, calculate_movie_stats
 
-@pytest.fixture(scope="session")
-def spark_session():
-    spark = SparkSession.builder.master("local[1]").appName("pytest-feature-engineer").getOrCreate()
-    yield spark
-    spark.stop()
-
 def test_join_dataframes_basic(spark_session):
     ratings_data = [
         Row(userId=1, movieId=10, rating=4.0),

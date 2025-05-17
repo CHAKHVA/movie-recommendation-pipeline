@@ -142,15 +142,15 @@
 
 ## Iteration 8: Adding Movie Stats
 
-*   [ ] **8.1: Feature Engineering - Movie Stats Function**
-    *   [ ] Implement `calculate_movie_stats(ratings_df)` in `src/feature_engineer.py` (group by `movieId`, agg `avg(rating)`, `count(rating)`).
-*   [ ] **8.2: Feature Engineering - Movie Stats Test**
-    *   [ ] Write `test_calculate_movie_stats` in `tests/test_feature_engineer.py` (use sample ratings, assert stats for known movie IDs, assert total count).
-*   [ ] **8.3: Main Script - Integrate Movie Stats Calc & Write**
-    *   [ ] Update `main.py` to import `calculate_movie_stats`.
-    *   [ ] Call `calculate_movie_stats` using `cleaned_ratings_df`.
-    *   [ ] Call `write_to_postgres` for `movie_stats_df` using DB config and table name from main config.
-    *   [ ] Log confirmation.
+*   [x] **8.1: Feature Engineering - Movie Stats Function**
+    *   [x] Implement `calculate_movie_stats(ratings_df)` in `src/feature_engineer.py` (group by `movieId`, agg `avg(rating)`, `count(rating)`).
+*   [x] **8.2: Feature Engineering - Movie Stats Test**
+    *   [x] Write `test_calculate_movie_stats` in `tests/test_feature_engineer.py` (use sample ratings, assert stats for known movie IDs, assert total count).
+*   [x] **8.3: Main Script - Integrate Movie Stats Calc & Write**
+    *   [x] Update `main.py` to import `calculate_movie_stats`.
+    *   [x] Call `calculate_movie_stats` using `cleaned_ratings_df`.
+    *   [x] Call `write_to_postgres` for `movie_stats_df` using DB config and table name from main config.
+    *   [x] Log confirmation.
 
 ## Iteration 9: S3 Integration & Final Polish
 
