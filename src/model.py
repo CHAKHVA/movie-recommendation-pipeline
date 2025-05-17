@@ -38,7 +38,7 @@ def train_als_model(data_df: DataFrame, config: dict) -> ALSModel:
         raise
 
 
-def generate_recommendations(model, top_n: int):
+def generate_recommendations(model: ALSModel, top_n: int):
     """
     Generate top N movie recommendations for all users using the trained ALS model.
 
