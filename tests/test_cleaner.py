@@ -1,5 +1,4 @@
-import pytest
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import Row
 from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
 
 

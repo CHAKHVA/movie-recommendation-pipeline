@@ -1,5 +1,4 @@
-import pytest
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import Row
 from src.feature_engineer import join_dataframes, calculate_movie_stats
 
 

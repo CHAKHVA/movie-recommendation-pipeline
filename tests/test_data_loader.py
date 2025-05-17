@@ -1,6 +1,5 @@
 import os
 import pytest
-from pyspark.errors.exceptions.base import AnalysisException
 from src.data_loader import load_csv_data
 
 

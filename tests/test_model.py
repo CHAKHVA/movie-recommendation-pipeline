@@ -1,5 +1,4 @@
-import pytest
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import Row
 from pyspark.ml.recommendation import ALSModel
 from src.model import train_als_model, generate_recommendations
 

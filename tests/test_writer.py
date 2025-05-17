@@ -1,6 +1,5 @@
 # import os
-import pytest
-from pyspark.sql import SparkSession, Row
+from pyspark.sql import Row
 from src.writer import write_to_postgres
 from src.utils import load_config
 
