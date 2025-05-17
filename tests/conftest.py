@@ -2,7 +2,7 @@ import pytest
 from pyspark.sql import SparkSession
 import os
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="function")
 def spark_session():
     # Get the current test function name
     test_name = os.environ.get('PYTEST_CURRENT_TEST', '').split(':')[-1].split(' ')[0]
@@ -21,5 +21,3 @@ def spark_session():
     
     # Clean up
     spark.stop()
-    SparkSession.clearDefaultSession()
-    SparkSession.clearActiveSession() 
