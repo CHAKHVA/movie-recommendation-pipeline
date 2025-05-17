@@ -112,17 +112,30 @@ def setup_logging(config: dict[str, Any]) -> None:
         except OSError as e:
             raise OSError(f"Failed to create log directory {log_dir}: {str(e)}")
 
-    # Configure logging with both file and console handlers
-    handlers = [logging.FileHandler(log_file), logging.StreamHandler()]
+    # Remove any existing handlers
+    root_logger = logging.getLogger()
+    for handler in root_logger.handlers[:]:
+        root_logger.removeHandler(handler)
 
     # Configure logging format
     log_format = "%(asctime)s - %(levelname)s - %(message)s"
     date_format = "%Y-%m-%d %H:%M:%S"
+    formatter = logging.Formatter(log_format, date_format)
+
+    # Create and configure file handler
+    file_handler = logging.FileHandler(log_file)
+    file_handler.setFormatter(formatter)
+    file_handler.setLevel(log_level)
+
+    # Create and configure console handler
+    console_handler = logging.StreamHandler()
+    console_handler.setFormatter(formatter)
+    console_handler.setLevel(log_level)
 
     # Configure the root logger
-    logging.basicConfig(
-        level=log_level, format=log_format, datefmt=date_format, handlers=handlers
-    )
+    root_logger.setLevel(log_level)
+    root_logger.addHandler(file_handler)
+    root_logger.addHandler(console_handler)
 
     # Log the setup completion
     logging.info(f"Logging configured: level={log_level_str}, file={log_file}")

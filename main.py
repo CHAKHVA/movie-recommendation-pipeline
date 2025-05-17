@@ -1,13 +1,13 @@
 import logging
+import os
 import sys
 import time
-import os
 
-from src.utils import load_config, setup_logging, get_spark_session
+from src.cleaner import clean_links, clean_movies, clean_ratings, clean_tags
 from src.data_loader import load_csv_data
-from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
-from src.feature_engineer import join_dataframes, calculate_movie_stats
-from src.model import train_als_model, generate_recommendations
+from src.feature_engineer import calculate_movie_stats, join_dataframes
+from src.model import generate_recommendations, train_als_model
+from src.utils import get_spark_session, load_config, setup_logging
 from src.writer import write_to_postgres
 
 # Path to the configuration file
@@ -126,7 +126,7 @@ if __name__ == "__main__":
             # Optional: Save model
             if not os.path.exists("models"):
                 os.makedirs("models")
-            model.save("models/als_model")
+            model.write().overwrite().save("models/als_model")
             logging.info("ALS model saved to models/als_model.")
 
             # Generate recommendations
