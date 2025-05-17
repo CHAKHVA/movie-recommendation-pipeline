@@ -168,10 +168,3 @@
 *   [x] **9.6: Final Testing**
     *   [x] Run `pytest` and ensure all tests pass (including PostgreSQL integration tests if feasible).
     *   [x] Run the full pipeline `python main.py` using S3 paths (if configured) and verify output in PostgreSQL.
-
-## Post-Completion
-
-*   [ ] Review code for style consistency and best practices.
-*   [ ] Add more robust error handling where needed.
-*   [ ] Consider adding type checking tools (e.g., mypy).
-*   [ ] Commit final changes to Git.

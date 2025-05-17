@@ -154,28 +154,6 @@ postgres:
    pytest -v tests/test_data_loader.py
    ```
 
-## Future Enhancements
-
-1. **Model Improvements**
-   - Implement content-based filtering
-   - Add hybrid recommendation approach
-   - Optimize ALS parameters
-
-2. **Performance**
-   - Add caching for intermediate results
-   - Implement batch processing
-   - Optimize Spark configurations
-
-3. **Features**
-   - Add user profile analysis
-   - Implement recommendation explanation
-   - Add real-time recommendation updates
-
-4. **Infrastructure**
-   - Add Docker support
-   - Implement CI/CD pipeline
-   - Add monitoring and alerting
-
 ## Contributing
 
 1. Fork the repository
