@@ -60,7 +60,7 @@ movie-recommendation-pipeline/
 2. **Installation**
    ```bash
    # Clone the repository
-   git clone <repository-url>
+   git clone https://github.com/CHAKHVA/movie-recommendation-pipeline.git
    cd movie-recommendation-pipeline
 
    # Create and activate virtual environment
@@ -161,7 +161,3 @@ postgres:
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
