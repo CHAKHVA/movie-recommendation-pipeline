@@ -1,8 +1,9 @@
+import logging
+import os
+import sys
+
 import pytest
 from pyspark.sql import SparkSession
-import os
-import logging
-import sys
 
 # Configure Py4J logging to use stderr instead of a file
 logging.getLogger("py4j").setLevel(logging.WARNING)

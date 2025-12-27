@@ -1,7 +1,8 @@
 # import os
 from pyspark.sql import Row
-from src.writer import write_to_postgres
+
 from src.utils import load_config
+from src.writer import write_to_postgres
 
 # # Test DB config (use environment variables or a safe method)
 # DB_CONFIG = {

@@ -1,5 +1,6 @@
-from pyspark.sql import DataFrame
 import logging
+
+from pyspark.sql import DataFrame
 
 
 def write_to_postgres(df: DataFrame, db_config: dict, table_name: str) -> None:

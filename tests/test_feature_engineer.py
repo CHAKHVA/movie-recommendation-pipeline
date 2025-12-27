@@ -1,5 +1,6 @@
 from pyspark.sql import Row
-from src.feature_engineer import join_dataframes, calculate_movie_stats
+
+from src.feature_engineer import calculate_movie_stats, join_dataframes
 
 
 def test_join_dataframes_basic(spark_session):

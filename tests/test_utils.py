@@ -6,7 +6,7 @@ import pytest
 import yaml
 from pyspark.sql import SparkSession
 
-from src.utils import get_nested_config, load_config, setup_logging, get_spark_session
+from src.utils import get_nested_config, get_spark_session, load_config, setup_logging
 
 
 def test_load_config(tmp_path):

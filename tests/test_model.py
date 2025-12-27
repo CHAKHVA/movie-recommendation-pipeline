@@ -1,6 +1,7 @@
-from pyspark.sql import Row
 from pyspark.ml.recommendation import ALSModel
-from src.model import train_als_model, generate_recommendations
+from pyspark.sql import Row
+
+from src.model import generate_recommendations, train_als_model
 
 
 def test_train_als_model(spark_session):

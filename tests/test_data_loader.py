@@ -25,7 +25,9 @@ Note on S3 Testing:
 """
 
 import os
+
 import pytest
+
 from src.data_loader import load_csv_data
 
 

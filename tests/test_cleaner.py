@@ -1,5 +1,6 @@
 from pyspark.sql import Row
-from src.cleaner import clean_movies, clean_ratings, clean_tags, clean_links
+
+from src.cleaner import clean_links, clean_movies, clean_ratings, clean_tags
 
 
 def test_clean_movies(spark_session):
